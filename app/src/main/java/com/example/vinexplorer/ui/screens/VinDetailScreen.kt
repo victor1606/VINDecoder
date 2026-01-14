@@ -17,6 +17,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +31,10 @@ import com.example.vinexplorer.data.model.ModelResult
 import com.example.vinexplorer.ui.components.*
 import com.example.vinexplorer.ui.viewmodel.UiState
 import com.example.vinexplorer.ui.viewmodel.VinDetailViewModel
+
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.vinexplorer.data.remote.CarImageApi
 
 /**
  * Detail screen showing full vehicle information
@@ -227,13 +233,16 @@ fun VinDetailScreen(
 }
 
 /**
- * Hero card showing VIN and vehicle name
+ * Hero card showing VIN and vehicle name with car image
  */
 @Composable
 private fun VinHeroCard(
     entity: DecodedVinEntity,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val logoUrl = CarImageApi.getManufacturerLogoUrl(entity.make)
+
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
@@ -247,15 +256,30 @@ private fun VinHeroCard(
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Vehicle Icon
-            Icon(
-                imageVector = Icons.Default.DirectionsCar,
-                contentDescription = null,
-                modifier = Modifier.size(48.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            // Manufacturer Logo
+            if (logoUrl != null) {
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(logoUrl)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "${entity.make} logo",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(12.dp)),
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+                // Fallback icon if no logo URL
+                Icon(
+                    imageVector = Icons.Default.DirectionsCar,
+                    contentDescription = null,
+                    modifier = Modifier.size(80.dp),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Vehicle Name
             Text(

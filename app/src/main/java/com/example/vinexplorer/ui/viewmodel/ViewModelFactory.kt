@@ -21,6 +21,9 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(VinDetailViewModel::class.java) -> {
                 VinDetailViewModel(repository, vin ?: "") as T
             }
+            modelClass.isAssignableFrom(FavoritesViewModel::class.java) -> {
+                FavoritesViewModel(repository) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

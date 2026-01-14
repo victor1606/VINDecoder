@@ -17,6 +17,7 @@ okhttpVersion = "4.12.0"
 coroutinesVersion = "1.9.0"
 kspVersion = "2.0.21-1.0.28"
 coilVersion = "2.7.0"
+mockitoVersion = "5.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,12 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 # Coil for images
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion" }
+
+# Testing
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

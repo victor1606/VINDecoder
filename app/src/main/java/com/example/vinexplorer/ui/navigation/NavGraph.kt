@@ -9,8 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.vinexplorer.data.repository.VinRepository
+import com.example.vinexplorer.ui.screens.FavoritesScreen
 import com.example.vinexplorer.ui.screens.VinDetailScreen
 import com.example.vinexplorer.ui.screens.VinListScreen
+import com.example.vinexplorer.ui.viewmodel.FavoritesViewModel
 import com.example.vinexplorer.ui.viewmodel.VinDetailViewModel
 import com.example.vinexplorer.ui.viewmodel.VinListViewModel
 import com.example.vinexplorer.ui.viewmodel.ViewModelFactory
@@ -37,7 +39,23 @@ fun NavGraph(
                 viewModel = viewModel,
                 onVinClick = { vin ->
                     navController.navigate(Screen.VinDetail.createRoute(vin))
+                },
+                onFavoritesClick = {
+                    navController.navigate(Screen.Favorites.route)
                 }
+            )
+        }
+
+        composable(route = Screen.Favorites.route) {
+            val viewModel: FavoritesViewModel = viewModel(
+                factory = ViewModelFactory(repository)
+            )
+            FavoritesScreen(
+                viewModel = viewModel,
+                onVinClick = { vin ->
+                    navController.navigate(Screen.VinDetail.createRoute(vin))
+                },
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 

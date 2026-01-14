@@ -35,7 +35,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun VinListScreen(
     viewModel: VinListViewModel,
-    onVinClick: (String) -> Unit
+    onVinClick: (String) -> Unit,
+    onFavoritesClick: () -> Unit
 ) {
     val vinInput by viewModel.vinInput.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
@@ -69,6 +70,15 @@ fun VinListScreen(
                             text = "Decode vehicle information",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onFavoritesClick) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = "Favorites",
+                            tint = MaterialTheme.colorScheme.error
                         )
                     }
                 },
@@ -337,54 +347,4 @@ private fun SearchBar(
     )
 }
 
-/**
- * Swipe to delete wrapper for VIN card
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SwipeToDeleteCard(
-    entity: DecodedVinEntity,
-    onClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
-    onDelete: () -> Unit
-) {
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { dismissValue ->
-            if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
-                onDelete()
-                true
-            } else {
-                false
-            }
-        }
-    )
-
-    SwipeToDismissBox(
-        state = dismissState,
-        backgroundContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(MaterialTheme.colorScheme.error)
-                    .padding(horizontal = 20.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
-                    tint = MaterialTheme.colorScheme.onError
-                )
-            }
-        },
-        content = {
-            VinHistoryCard(
-                entity = entity,
-                onClick = onClick,
-                onFavoriteClick = onFavoriteClick
-            )
-        },
-        enableDismissFromStartToEnd = false
-    )
-}
 

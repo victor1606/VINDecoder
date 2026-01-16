@@ -106,14 +106,6 @@ VIN Explorer follows **Clean Architecture** principles with **MVVM** (Model-View
 
 ## Tech Stack
 
-### Core Technologies
-
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| **Kotlin** | Primary programming language | 2.0.21 |
-| **Jetpack Compose** | Modern declarative UI toolkit | BOM 2024.12.01 |
-| **Material 3** | Design system and components | Latest |
-
 ### Android Jetpack
 
 | Library | Purpose |
